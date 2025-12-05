@@ -13,25 +13,43 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Authentication authentication) {
+        String login = "<a href='/login'>Login</a><br/>";
+        String logout = "<a href='/logout'>Logout</a><br/>";
+        String user = "<a href='/user'>Private for User</a><br/>";
+        String admin = "<a href='/admin'>Private for Admin</a>";
         if (authentication != null) {
             userName = authentication.getName().toUpperCase();
+        } else {
+            userName = "Anonymous";
         }
+
         return ("""
                 <center>
                 <h1>Spring Boot Tutorial</h1>
                 <h2>Home Page!</h2>
                 <p>Username: %s</p>
                 <a href='/public'>Public</a><br/>
-                <a href='/user'>Private for User</a><br/>
-                <a href='/admin'>Private for Admin</a>
+                <p></p>
+                %s
+                %s
+                <p></p>
+                %s
+                %s
+                <p></p>
                 </center>
-                """).formatted(userName);
+                """).formatted(userName,
+                authentication == null ? login : "",
+                authentication == null ? "" : logout,
+                userName.equals("Anonymous") ? "" : user,
+                userName.equals("Anonymous") ? "" : userName.equals("ADMIN") ? admin : "");
     }
 
     @GetMapping("/public")
     public String public_page(Authentication authentication) {
         if (authentication != null) {
             userName = authentication.getName().toUpperCase();
+        } else {
+            userName = "Anonymous";
         }
         return ("""
                 <center>

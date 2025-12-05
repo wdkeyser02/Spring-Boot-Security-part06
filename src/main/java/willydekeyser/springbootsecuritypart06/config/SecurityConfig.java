@@ -16,7 +16,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 //.httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(login -> login
+                        .defaultSuccessUrl("/", true)
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                        .deleteCookies("JSESSIONID")
+                        .permitAll())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/", "/public").permitAll()
                         .requestMatchers("/user/**").hasRole("USER")
