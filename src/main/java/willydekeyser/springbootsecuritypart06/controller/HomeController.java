@@ -40,7 +40,7 @@ public class HomeController {
                 """).formatted(userName,
                 authentication == null ? login : "",
                 authentication == null ? "" : logout,
-                userName.equals("Anonymous") ? "" : user,
+                userName.equals("Anonymous") ? "" : userName.equals("USER") || userName.equals("ADMIN") ? user : "",
                 userName.equals("Anonymous") ? "" : userName.equals("ADMIN") ? admin : "");
     }
 
